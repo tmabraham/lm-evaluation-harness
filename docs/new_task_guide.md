@@ -46,16 +46,6 @@ dataset_name: ... # the dataset configuration to use. Leave `null` if your datas
 dataset_kwargs: null # any extra keyword arguments that should be passed to the dataset constructor, e.g. `data_dir`.
 ```
 
-------------------------------
-**Tip:** To load a local dataset for evaluation, you can specify data files in the `dataset_kwargs` field, such as the following for JSON files:
-```
-dataset_path: json
-dataset_name: null
-dataset_kwargs:
-  data_files: /path/to/my/json
-```
--------------------------------
-
 Next, we'd like to tell our task what the dataset's train, validation, and test splits are named, if they exist:
 
 ```yaml
@@ -98,6 +88,36 @@ Now, in our YAML config file we'll use the `!function` constructor, and tell the
 ```yaml
 process_docs: !function utils.process_docs
 ```
+
+### Using Local Datasets
+
+To load a local dataset for evaluation, you can specify data files in the `dataset_kwargs` field, such as the following for JSON files:
+
+```
+dataset_path: json
+dataset_name: null
+dataset_kwargs:
+  data_files: /path/to/my/json
+```
+Or with files already split into separate directories:
+
+```
+dataset_path: arrow
+dataset_kwargs:
+  data_files:
+    train: /path/to/arrow/train/data-00000-of-00001.arrow
+    validation: /path/to/arrow/validation/data-00000-of-00001.arrow
+```
+
+Alternatively, if you have previously downloaded a dataset from huggingface hub (using `save_to_disk()`) and wish to use the local files, you will need to use `data_dir` under `dataset_kwargs` to point to where the directory is.
+
+```
+dataset_path: hellaswag
+dataset_kwargs:
+  data_dir: hellaswag_local/
+```
+
+You can also set `dataset_path` as a directory path in your local system. This will assume that there is a loading script with the same name as the directory. [See datasets docs](https://huggingface.co/docs/datasets/loading#local-loading-script).
 
 ## Writing a Prompt Template
 
@@ -359,4 +379,4 @@ It is recommended to include a filled-out copy of this checklist in the README.m
 
 ## Submitting your task
 
-You're all set! Now push your work and make a pull request to the `big-refactor` branch! Thanks for the contribution :). If there are any questions, please leave a message in the `#lm-thunderdome` channel on the EAI discord!
+You're all set! Now push your work and make a pull request to the `main` branch! Thanks for the contribution :). If there are any questions, please leave a message in the `#lm-thunderdome` channel on the EAI discord!
